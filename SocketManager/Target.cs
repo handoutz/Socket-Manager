@@ -29,7 +29,8 @@ namespace SocketManager
         }
         void _PollTimer_Elapsed(object sender, T.ElapsedEventArgs e)
         {
-            NetController.Instance.ClientPingFail(ID);
+            if(!AssocSock.Poll(1000, SelectMode.SelectWrite))
+                NetController.Instance.ClientPingFail(ID);
         }
         public void Send(byte[] data)
         {

@@ -133,19 +133,21 @@ namespace SocketManager
         {
             var t = (Target)z;
             var sock = t.AssocSock;
-            while (sock.Connected)
+            NetworkStream str = new NetworkStream(sock);
+            StreamReader read = new StreamReader(str);
+            lock (sock) lock (str)
             {
-                List<byte> packet = new List<byte>();
-                byte[] b = new byte[256];
-                int rec = sock.Receive(b);
-                while (rec > 0)
+                while (true)
                 {
-                    packet.AddRange(b);
-                    b = new byte[256];
-                    rec = sock.Receive(b, 0, 256, SocketFlags.None);
+                    if (!str.DataAvailable) continue;
+                    try
+                    {
+                        string r = read.ReadToEnd();
+                        RecieveEvent(this, new NetEventArgs(Encoding.ASCII, t.IPAddr, t.ID,
+                                null, Encoder.GetBytes(r)));
+                    }
+                    catch (Exception) { break; }
                 }
-                RecieveEvent(this, new NetEventArgs(Encoding.ASCII, t.IPAddr, t.ID, 
-                        null, packet.ToArray()));
             }
         }
         #endregion
