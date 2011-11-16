@@ -12,15 +12,14 @@ namespace SocketManager
     internal class Target : IDisposable
     {
         public Guid ID;
-        public Thread AssocThread;
         public Socket AssocSock;
         public EndPoint IPAddr;
+        public byte[] Buffer = null;
         private T.Timer _PollTimer;
         private List<Thread> SendThreads = new List<Thread>();
-        public Target(Thread t, EndPoint d, Socket @ref)
+        public Target(EndPoint d, Socket @ref)
         {
             ID = Guid.NewGuid();
-            AssocThread = t;
             IPAddr = d;
             AssocSock = @ref;
             _PollTimer = new T.Timer(1000);
@@ -56,7 +55,6 @@ namespace SocketManager
             _PollTimer.Dispose();
             AssocSock.Close();
             AssocSock.Dispose();
-            AssocThread.Abort();
         }
     }
 }

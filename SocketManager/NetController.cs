@@ -14,6 +14,7 @@ namespace SocketManager
     /// </summary>
     public class NetController
     {
+        private const int BUFFER_SIZE = 512;
         public static NetController Instance;
         #region vars
         private SocketProfile _Profile;
@@ -111,7 +112,6 @@ namespace SocketManager
         #region Private Methods
         internal void ClientPingFail(Guid who)
         {
-            _Threads[who].AssocThread.Abort();
             DisconnectionEvent(this, new NetEventArgs(null, null, who, null));
         }
         private void ListenThread()
@@ -120,35 +120,20 @@ namespace SocketManager
             while (true)
             {
                 Socket cli = _Sock.Accept();
-                Thread tar = new Thread(RecieveThread);
-                tar.IsBackground = true;
-                Target targ = new Target(tar, cli.RemoteEndPoint, cli);
+                Target targ = new Target(cli.RemoteEndPoint, cli);
                 _Threads.Add(targ.ID, targ);
-                NewConnectionEvent(this, new NetEventArgs(Encoding.ASCII, cli.RemoteEndPoint,
-                    targ.ID, null, null));
-                targ.AssocThread.Start(targ);
+                NewConnectionEvent(this, new NetEventArgs(Encoding.ASCII, cli.RemoteEndPoint, targ.ID, null, null));
+                targ.Buffer = new byte[BUFFER_SIZE];
+                cli.BeginReceive(targ.Buffer, 0, BUFFER_SIZE, SocketFlags.None, Recieve, targ);
             }
         }
-        private void RecieveThread(object z)
+        private void Recieve(IAsyncResult r)
         {
-            var t = (Target)z;
-            var sock = t.AssocSock;
-            NetworkStream str = new NetworkStream(sock);
-            StreamReader read = new StreamReader(str);
-            lock (sock) lock (str)
-            {
-                while (true)
-                {
-                    if (!str.DataAvailable) continue;
-                    try
-                    {
-                        string r = read.ReadToEnd();
-                        RecieveEvent(this, new NetEventArgs(Encoding.ASCII, t.IPAddr, t.ID,
-                                null, Encoder.GetBytes(r)));
-                    }
-                    catch (Exception) { break; }
-                }
-            }
+            var targ = (Target)r.AsyncState;
+            var sock = targ.AssocSock;
+            sock.EndReceive(r);
+            RecieveEvent(this, new NetEventArgs(Encoder, null, targ.ID, null, targ.Buffer));
+            sock.BeginReceive(targ.Buffer, 0, BUFFER_SIZE, SocketFlags.None, Recieve, targ);
         }
         #endregion
     }
