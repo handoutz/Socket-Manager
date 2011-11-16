@@ -1,0 +1,5 @@
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketManager\bin\Debug\SocketManager.dll
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketManager\bin\Debug\SocketManager.pdb
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketManager\obj\Debug\ResolveAssemblyReference.cache
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketManager\obj\Debug\SocketManager.dll
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketManager\obj\Debug\SocketManager.pdb

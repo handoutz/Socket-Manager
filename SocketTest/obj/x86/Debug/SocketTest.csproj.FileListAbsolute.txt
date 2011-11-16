@@ -1,0 +1,7 @@
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketTest\bin\Debug\SocketTest.exe
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketTest\bin\Debug\SocketTest.pdb
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketTest\bin\Debug\SocketManager.dll
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketTest\bin\Debug\SocketManager.pdb
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketTest\obj\x86\Debug\ResolveAssemblyReference.cache
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketTest\obj\x86\Debug\SocketTest.exe
+c:\users\vince\documents\visual studio 2010\Projects\SocketManager\SocketTest\obj\x86\Debug\SocketTest.pdb
