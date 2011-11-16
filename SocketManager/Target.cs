@@ -9,7 +9,7 @@ using T = System.Timers;
 
 namespace SocketManager
 {
-    internal class Target
+    internal class Target : IDisposable
     {
         public Guid ID;
         public Thread AssocThread;
@@ -27,7 +27,6 @@ namespace SocketManager
             _PollTimer.Elapsed += new T.ElapsedEventHandler(_PollTimer_Elapsed);
             _PollTimer.Start();
         }
-
         void _PollTimer_Elapsed(object sender, T.ElapsedEventArgs e)
         {
             NetController.Instance.ClientPingFail(ID);
@@ -45,8 +44,18 @@ namespace SocketManager
         }
         ~Target()
         {
+            this.Dispose();
             foreach (Thread t in SendThreads)
                 t.Abort();
+        }
+
+        public void Dispose()
+        {
+            _PollTimer.Close();
+            _PollTimer.Dispose();
+            AssocSock.Close();
+            AssocSock.Dispose();
+            AssocThread.Abort();
         }
     }
 }
