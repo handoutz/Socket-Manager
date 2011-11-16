@@ -87,10 +87,17 @@ namespace SocketManager
         }
         private void RecieveAsync(IAsyncResult r)
         {
-            var sock = (Socket)r.AsyncState;
-            sock.EndReceive(r);
-            OnRecieve("recieve", _RecieveBuffer);
-            sock.BeginReceive(_RecieveBuffer, 0, R.BUFFER_SIZE, SocketFlags.None, RecieveAsync, sock);
+            try
+            {
+                var sock = (Socket)r.AsyncState;
+                sock.EndReceive(r);
+                OnRecieve("recieve", _RecieveBuffer);
+                sock.BeginReceive(_RecieveBuffer, 0, R.BUFFER_SIZE, SocketFlags.None, RecieveAsync, sock);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("RECV: FAIL CANNOT CONTINUE.");
+            }
         }
         private void SendAsync(IAsyncResult r)
         {

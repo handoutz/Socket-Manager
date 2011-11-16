@@ -14,11 +14,14 @@ namespace SocketManager
         private Socket _ListenerSocket;
         private Dictionary<Guid, Client> _Clients = new Dictionary<Guid, Client>();
         private Encoding Encoder;
+        private IPEndPoint _ip;
         #endregion
 
         #region Events
         public event ServerEvent OnClientConnect;
         public event ServerEvent OnDataRecieved;
+        public event ServerEvent OnClientDisconnect;
+        public event ServerEvent OnSuccessSend;
         #endregion
 
         #region Constructors
@@ -26,10 +29,8 @@ namespace SocketManager
             SocketType type = SocketType.Stream, ProtocolType ptype = ProtocolType.Tcp)
         {
             SetEncoding(Encoding.ASCII);
+            _ip = e;
             _ListenerSocket = new Socket(fam, type, ptype);
-            _ListenerSocket.Bind(e);
-            _ListenerSocket.Listen(10);
-            _ListenerSocket.BeginAccept(AcceptCB, _ListenerSocket);
         }
         public void SetEncoding(Encoding e)
         {
@@ -38,6 +39,12 @@ namespace SocketManager
         #endregion
 
         #region Public Methods
+        public void Start()
+        {
+            _ListenerSocket.Bind(_ip);
+            _ListenerSocket.Listen(10);
+            _ListenerSocket.BeginAccept(AcceptCB, _ListenerSocket);
+        }
         public void Send(Guid cli, string data)
         {
             if (_Clients.ContainsKey(cli))
@@ -60,6 +67,7 @@ namespace SocketManager
         {
             var cli = (Client)r.AsyncState;
             cli.RemoteSocket.EndSend(r);
+            OnSuccessSend(new Result(null, cli));
         }
         private void AcceptCB(IAsyncResult r)
         {
@@ -74,10 +82,19 @@ namespace SocketManager
         private void RecieveCB(IAsyncResult r)
         {
             var cli = (Client)r.AsyncState;
-            cli.RemoteSocket.EndReceive(r);
-            OnDataRecieved(new Result(cli.RecieveBuffer, cli));
-            cli.RecieveBuffer = new byte[R.BUFFER_SIZE];
-            cli.RemoteSocket.BeginReceive(cli.RecieveBuffer, 0, R.BUFFER_SIZE, SocketFlags.None, RecieveCB, cli);
+            try
+            {
+                cli.RemoteSocket.EndReceive(r);
+                OnDataRecieved(new Result(cli.RecieveBuffer, cli));
+                cli.RecieveBuffer = new byte[R.BUFFER_SIZE];
+                cli.RemoteSocket.BeginReceive(cli.RecieveBuffer, 0, R.BUFFER_SIZE, SocketFlags.None, RecieveCB, cli);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(string.Format("{0}: RECV FAIL CLIENT DISCONNECT", cli.ID));
+                OnClientDisconnect(new Result(null, cli));
+                _Clients.Remove(cli.ID);
+            }
         }
         #endregion
     }

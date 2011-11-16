@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SocketManager
 {
@@ -25,7 +26,9 @@ namespace SocketManager
         public Result(byte[] b, Client c) : this(b, c, Encoding.ASCII) { }
         public string AsString()
         {
-            return Encoder.GetString(_buff).Trim();
+            string r = Encoder.GetString(_buff);
+            r = Regex.Replace(r, "[^a-zA-Z0-9]", "");
+            return r;
         }
         public override string ToString()
         {

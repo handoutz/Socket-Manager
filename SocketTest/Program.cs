@@ -14,6 +14,7 @@ namespace SocketTest
             ServerSocket sock = new ServerSocket(new IPEndPoint(IPAddress.Any, 51215));
             sock.OnClientConnect += new ServerEvent(sock_OnClientConnect);
             sock.OnDataRecieved += new ServerEvent(sock_OnDataRecieved);
+            sock.Start();
             while (Console.ReadLine() != "q") ;
         }
 
