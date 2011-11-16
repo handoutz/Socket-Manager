@@ -14,6 +14,7 @@ namespace SocketManager
     /// </summary>
     public class NetController
     {
+        public static NetController Instance;
         #region vars
         private SocketProfile _Profile;
         private SocketInformation _SockInfo;
@@ -24,6 +25,7 @@ namespace SocketManager
 
         public event NetEvent RecieveEvent;
         public event NetEvent NewConnectionEvent;
+        public event NetEvent DisconnectionEvent;
         #endregion
 
         #region Constructors
@@ -35,6 +37,7 @@ namespace SocketManager
         {
             _Profile = p;
             _Threads = new Dictionary<Guid, Target>();
+            NetController.Instance = this;
         }
         /// <summary>
         /// Default constructor, defaults to SocketProfile.Client
@@ -76,6 +79,11 @@ namespace SocketManager
         #endregion
 
         #region Private Methods
+        internal void ClientPingFail(Guid who)
+        {
+            _Threads[who].AssocThread.Abort();
+            DisconnectionEvent(this, new NetEventArgs(null, null, who, null));
+        }
         private void ListenThread()
         {
             _Sock.Listen(25);
@@ -106,9 +114,7 @@ namespace SocketManager
                     b = new byte[256];
                     rec = sock.Receive(b, 0, 256, SocketFlags.None);
                 }
-                
-                lock(RecieveEvent)
-                    RecieveEvent(this, new NetEventArgs(Encoding.ASCII, t.IPAddr, t.ID, 
+                RecieveEvent(this, new NetEventArgs(Encoding.ASCII, t.IPAddr, t.ID, 
                         null, packet.ToArray()));
             }
         }
