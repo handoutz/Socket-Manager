@@ -22,10 +22,13 @@ namespace SocketManager
         private Thread _ListenThread;
         private Dictionary<Guid, Target> _Threads;
         private Encoding Encoder;
+        private Socket _ClientProfSocket;
 
         public event NetEvent RecieveEvent;
         public event NetEvent NewConnectionEvent;
         public event NetEvent DisconnectionEvent;
+
+
         #endregion
 
         #region Constructors
@@ -46,6 +49,33 @@ namespace SocketManager
         #endregion
 
         #region Public Methods
+        public NetworkStream GetStream()
+        {
+            if (_Profile == SocketProfile.Client)
+                return new NetworkStream(_ClientProfSocket);
+            else
+                return null;
+        }
+        public void Connect(IPEndPoint p,
+            AddressFamily family = AddressFamily.InterNetwork,
+            SocketType type = SocketType.Stream,
+            ProtocolType protoType = ProtocolType.Tcp)
+        {
+            _ClientProfSocket = new Socket(family, type, protoType);
+            _ClientProfSocket.Connect(p);
+        }
+        public void Connect(IPEndPoint p)
+        {
+            Connect(p);
+        }
+        public void Connect(IPAddress a, int port)
+        {
+            Connect(new IPEndPoint(a, port));
+        }
+        public void Connect(string ip, int port)
+        {
+            Connect(IPAddress.Parse(ip), port);
+        }
         public void SetEncoding(Encoding e)
         {
             Encoder = e;
