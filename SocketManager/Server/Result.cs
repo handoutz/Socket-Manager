@@ -25,7 +25,11 @@ namespace SocketManager
         public Result(byte[] b, Client c) : this(b, c, Encoding.ASCII) { }
         public string AsString()
         {
-            return Encoder.GetString(_buff);
+            return Encoder.GetString(_buff).Trim();
+        }
+        public override string ToString()
+        {
+            return AsString();
         }
     }
 }

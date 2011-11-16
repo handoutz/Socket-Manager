@@ -76,6 +76,7 @@ namespace SocketManager
             var cli = (Client)r.AsyncState;
             cli.RemoteSocket.EndReceive(r);
             OnDataRecieved(new Result(cli.RecieveBuffer, cli));
+            cli.RecieveBuffer = new byte[R.BUFFER_SIZE];
             cli.RemoteSocket.BeginReceive(cli.RecieveBuffer, 0, R.BUFFER_SIZE, SocketFlags.None, RecieveCB, cli);
         }
         #endregion

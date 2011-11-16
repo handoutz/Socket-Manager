@@ -48,6 +48,11 @@ namespace SocketManager
         {
             _Socket.BeginDisconnect(false, DisconnectAsync, _Socket);
         }
+        public void Send(string dat)
+        {
+            byte[] buff = Encoder.GetBytes(dat);
+            _Socket.BeginSend(buff, 0, buff.Length, SocketFlags.None, SendAsync, _Socket);
+        }
         #endregion
 
         #region Events
