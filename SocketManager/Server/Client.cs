@@ -16,6 +16,8 @@ namespace SocketManager
         public Socket RemoteSocket { get { return _Sock; } set { _Sock = value; } }
         public byte[] RecieveBuffer = new byte[R.BUFFER_SIZE];
 
+        public SocketError Errors;
+
         private T.Timer time;
 
         public Client(Socket s)

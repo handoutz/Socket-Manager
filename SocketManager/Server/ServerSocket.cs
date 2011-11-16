@@ -67,7 +67,7 @@ namespace SocketManager
         {
             var cli = (Client)r.AsyncState;
             cli.RemoteSocket.EndSend(r);
-            OnSuccessSend(new Result(null, cli));
+            OnSuccessSend(new Result(new byte[1], cli));
         }
         private void AcceptCB(IAsyncResult r)
         {
@@ -76,25 +76,46 @@ namespace SocketManager
             Client c = new Client(cli);
             _Clients.Add(c.ID, c);
             c.RemoteSocket.BeginReceive(c.RecieveBuffer, 0, R.BUFFER_SIZE, SocketFlags.None, RecieveCB, c);
-            OnClientConnect(new Result(null, c));
+            if(OnClientConnect!=null)
+                OnClientConnect(new Result(null, c));
             _ListenerSocket.BeginAccept(AcceptCB, sock);
+        }
+        private bool IsConnected(Socket socket)
+        {
+            try
+            {
+                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
+            }
+            catch (SocketException) { return false; }
         }
         private void RecieveCB(IAsyncResult r)
         {
+            
             var cli = (Client)r.AsyncState;
             try
             {
                 cli.RemoteSocket.EndReceive(r);
+                if (IsConnected(cli.RemoteSocket))
+                {
+                    DisconnectClient(cli);
+                    return;
+                }
                 OnDataRecieved(new Result(cli.RecieveBuffer, cli));
                 cli.RecieveBuffer = new byte[R.BUFFER_SIZE];
-                cli.RemoteSocket.BeginReceive(cli.RecieveBuffer, 0, R.BUFFER_SIZE, SocketFlags.None, RecieveCB, cli);
+                cli.RemoteSocket.BeginReceive(cli.RecieveBuffer, 0, R.BUFFER_SIZE, SocketFlags.None, out cli.Errors, RecieveCB, cli);
             }
             catch (Exception)
             {
                 Console.WriteLine(string.Format("{0}: RECV FAIL CLIENT DISCONNECT", cli.ID));
-                OnClientDisconnect(new Result(null, cli));
-                _Clients.Remove(cli.ID);
+                DisconnectClient(cli);
+                
             }
+        }
+        private void DisconnectClient(Client cli)
+        {
+            OnClientDisconnect(new Result(null, cli));
+            cli.RemoteSocket.Close();
+            _Clients.Remove(cli.ID);
         }
         #endregion
     }
