@@ -6,17 +6,23 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.IO;
+using T = System.Timers;
 
 namespace SocketManager
 {
     public delegate void SocketEvent(object State, byte[] RawBuffer);
     public class ClientSocket
     {
+        #region Field Vars
         private IPEndPoint _EndPoint;
         private Socket _Socket;
         private byte[] _RecieveBuffer = new byte[R.BUFFER_SIZE];
         private byte[] _SendBuffer = new byte[R.BUFFER_SIZE];
         private Encoding Encoder;
+        private T.Timer _TimedPoll;
+        #endregion
+
+        #region Constructors
         public ClientSocket(IPEndPoint e, AddressFamily fam = AddressFamily.InterNetwork,
             SocketType type = SocketType.Stream, ProtocolType ptype = ProtocolType.Tcp)
         {
@@ -24,20 +30,47 @@ namespace SocketManager
             _EndPoint = e;
             _Socket = new Socket(fam, type, ptype);
             _Socket.BeginConnect(e, ConnectAsync, _Socket);
+
+            _TimedPoll = new T.Timer(2000);
+            _TimedPoll.Elapsed += new T.ElapsedEventHandler(_TimedPoll_Elapsed);
+            _TimedPoll.Start();
         }
         public ClientSocket(IPAddress a, int port) : this(new IPEndPoint(a, port)) { }
         public ClientSocket(string a, int port) : this(new IPEndPoint(IPAddress.Parse(a), port))  { }
+        #endregion
 
+        #region Pub Methods
         public void SetEncoding(Encoding e)
         {
             Encoder = e;
         }
+        public void Disconnect()
+        {
+            _Socket.BeginDisconnect(false, DisconnectAsync, _Socket);
+        }
+        #endregion
 
+        #region Events
         public event SocketEvent OnConnected;
         public event SocketEvent OnRecieve;
         public event SocketEvent OnSuccessSend;
         public event SocketEvent OnError;
-        public event SocketEvent OnDisconnect;
+        public event SocketEvent OnDisconnect; 
+        #endregion
+
+        #region AsyncAndPrivateMethods
+        private void _TimedPoll_Elapsed(object sender, T.ElapsedEventArgs e)
+        {
+            if (!_Socket.Poll(1000, SelectMode.SelectWrite))
+                _Socket.Close();
+        }
+        private void DisconnectAsync(IAsyncResult r)
+        {
+            ((Socket)r.AsyncState).EndDisconnect(r);
+            OnDisconnect("requested", null);
+            _Socket.Close();
+            _Socket.Dispose();
+        }
 
         private void ConnectAsync(IAsyncResult r)
         {
@@ -57,7 +90,8 @@ namespace SocketManager
         {
             var sock = (Socket)r.AsyncState;
             sock.EndSend(r);
-            OnSuccessSend("true", null);
-        }
+            OnSuccessSend(true, null);
+        } 
+        #endregion
     }
 }
