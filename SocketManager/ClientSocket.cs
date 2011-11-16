@@ -54,6 +54,7 @@ namespace SocketManager
         public event SocketEvent OnConnected;
         public event SocketEvent OnRecieve;
         public event SocketEvent OnSuccessSend;
+#pragma warning disable
         public event SocketEvent OnError;
         public event SocketEvent OnDisconnect; 
         #endregion
