@@ -1,9 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketManager", "SocketManager\SocketManager.csproj", "{A21FDB1A-65F2-4FBF-99BB-47FFAE6B29BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketTest", "SocketTest\SocketTest.csproj", "{E26D05C8-06E5-438F-8377-2D590B087C28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net.NextGen", "Net.NextGen\Net.NextGen.csproj", "{A3754855-9C74-4D75-BFD9-B37942AF3046}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,16 @@ Global
 		{E26D05C8-06E5-438F-8377-2D590B087C28}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E26D05C8-06E5-438F-8377-2D590B087C28}.Release|x86.ActiveCfg = Release|x86
 		{E26D05C8-06E5-438F-8377-2D590B087C28}.Release|x86.Build.0 = Release|x86
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A3754855-9C74-4D75-BFD9-B37942AF3046}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

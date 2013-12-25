@@ -5,3 +5,10 @@ C:\Users\Vince\Documents\Visual Studio 2010\Projects\SocketManager\SocketTest\bi
 C:\Users\Vince\Documents\Visual Studio 2010\Projects\SocketManager\SocketTest\obj\x86\Release\ResolveAssemblyReference.cache
 C:\Users\Vince\Documents\Visual Studio 2010\Projects\SocketManager\SocketTest\obj\x86\Release\SocketTest.exe
 C:\Users\Vince\Documents\Visual Studio 2010\Projects\SocketManager\SocketTest\obj\x86\Release\SocketTest.pdb
+C:\programming\bs\Socket-Manager\SocketTest\obj\x86\Release\SocketTest.exe
+C:\programming\bs\Socket-Manager\SocketTest\obj\x86\Release\SocketTest.pdb
+C:\programming\bs\Socket-Manager\SocketTest\bin\Release\SocketTest.exe
+C:\programming\bs\Socket-Manager\SocketTest\bin\Release\SocketTest.pdb
+C:\programming\bs\Socket-Manager\SocketTest\bin\Release\SocketManager.dll
+C:\programming\bs\Socket-Manager\SocketTest\bin\Release\SocketManager.pdb
+C:\programming\bs\Socket-Manager\SocketTest\obj\x86\Release\SocketTest.csprojResolveAssemblyReference.cache

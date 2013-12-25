@@ -1,0 +1,8 @@
+C:\programming\bs\Socket-Manager\Net.NextGen\bin\Release\Net.NextGen.dll.config
+C:\programming\bs\Socket-Manager\Net.NextGen\bin\Release\Net.NextGen.dll
+C:\programming\bs\Socket-Manager\Net.NextGen\bin\Release\Net.NextGen.pdb
+C:\programming\bs\Socket-Manager\Net.NextGen\bin\Release\log4net.dll
+C:\programming\bs\Socket-Manager\Net.NextGen\bin\Release\log4net.xml
+C:\programming\bs\Socket-Manager\Net.NextGen\obj\Release\Net.NextGen.csprojResolveAssemblyReference.cache
+C:\programming\bs\Socket-Manager\Net.NextGen\obj\Release\Net.NextGen.dll
+C:\programming\bs\Socket-Manager\Net.NextGen\obj\Release\Net.NextGen.pdb

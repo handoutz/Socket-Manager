@@ -3,3 +3,8 @@ C:\Users\Vince\Documents\Visual Studio 2010\Projects\SocketManager\SocketManager
 C:\Users\Vince\Documents\Visual Studio 2010\Projects\SocketManager\SocketManager\obj\Release\ResolveAssemblyReference.cache
 C:\Users\Vince\Documents\Visual Studio 2010\Projects\SocketManager\SocketManager\obj\Release\SocketManager.dll
 C:\Users\Vince\Documents\Visual Studio 2010\Projects\SocketManager\SocketManager\obj\Release\SocketManager.pdb
+C:\programming\bs\Socket-Manager\SocketManager\bin\Release\SocketManager.dll
+C:\programming\bs\Socket-Manager\SocketManager\bin\Release\SocketManager.pdb
+C:\programming\bs\Socket-Manager\SocketManager\obj\Release\SocketManager.csprojResolveAssemblyReference.cache
+C:\programming\bs\Socket-Manager\SocketManager\obj\Release\SocketManager.dll
+C:\programming\bs\Socket-Manager\SocketManager\obj\Release\SocketManager.pdb
